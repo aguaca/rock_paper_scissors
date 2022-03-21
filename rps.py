@@ -16,7 +16,8 @@ def valid_input(prompt="Rock, paper, scissors? > "):
         if response in moves:
             break
         else:
-            print("Sorry, I don't understand.")
+            # print("Sorry, I don't understand.")
+            pass
     return response
 
 
@@ -32,6 +33,9 @@ class RandomPlayer(Player):
     def move(self):
         return random.choice(moves)
 
+class HumanPlayer(Player):
+    def move(self):
+        return valid_input()
 
 def beats(one, two):
     return ((one == 'rock' and two == 'scissors') or
@@ -75,5 +79,5 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game(RandomPlayer(), RandomPlayer())
+    game = Game(HumanPlayer(), RandomPlayer())
     game.play_game()
