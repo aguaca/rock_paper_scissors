@@ -50,6 +50,21 @@ class ReflectPlayer(Player):
         self.last_move = their_move
 
 
+class CyclePlayer(Player):
+    def __init__(self):
+        self.last_move = random.choice(moves)
+
+    def move(self):
+        i = moves.index(self.last_move) + 1
+        if i < len(moves):
+            return moves[i]
+        else:
+            return moves[0]
+
+    def learn(self, my_move, _):
+        self.last_move = my_move
+
+
 def beats(one, two):
     return ((one == 'rock' and two == 'scissors') or
             (one == 'scissors' and two == 'paper') or
@@ -85,12 +100,12 @@ class Game:
 
     def play_game(self):
         print("Game start!")
-        for round in range(3):
+        for round in range(10):
             print(f"Round {round + 1} --")
             self.play_round()
         print("Game over!")
 
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), ReflectPlayer())
+    game = Game(HumanPlayer(), CyclePlayer())
     game.play_game()
