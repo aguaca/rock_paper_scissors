@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import random
 
+from click import prompt
+
 """This program plays a game of Rock, Paper, Scissors between two Players,
 and reports both Player's scores each round."""
 
@@ -17,9 +19,10 @@ rps = {
 
 """The Player class is the parent class for all of the Players
 in this game"""
+prompt = "{}, {}, {}? > ".format(rps['rock'], rps['paper'], rps['scissors'])
 
 
-def valid_input(prompt="{}, {}, {}? > ".format(rps['rock'],rps['paper'],rps['scissors'])):
+def valid_input(prompt=prompt):
     while True:
         response = input(prompt).lower()
         if response in moves:
