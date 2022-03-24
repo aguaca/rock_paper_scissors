@@ -5,12 +5,21 @@ import random
 and reports both Player's scores each round."""
 
 moves = ['rock', 'paper', 'scissors']
+GREEN = "\u001b[32;1m"
+ORANGE = "\u001b[33m"
+PURPLE = "\u001b[35;1m"
+RESET = "\u001b[0m"
+rps = {
+    "rock": GREEN + 'Rock' + RESET,
+    "paper": ORANGE + 'Paper' + RESET,
+    "scissors": PURPLE + 'Scissors' + RESET
+}
 
 """The Player class is the parent class for all of the Players
 in this game"""
 
 
-def valid_input(prompt="Rock, paper, scissors? > "):
+def valid_input(prompt="{}, {}, {}? > ".format(rps['rock'],rps['paper'],rps['scissors'])):
     while True:
         response = input(prompt).lower()
         if response in moves:
@@ -81,17 +90,17 @@ class Game:
     def play_round(self):
         move1 = self.p1.move()
         move2 = self.p2.move()
-        print(f"You played {move1}.")
-        print(f"Opponent played {move2}.")
+        print("You played {}.".format(rps[move1].lower()))
+        print("Opponent played {}.".format(rps[move2].lower()))
 
         result = beats(move1, move2)
         if move1 == move2:
-            print("** TIE **")
+            print("\u001b[41;1m** TIE **\u001b[0m")
         elif result:
-            print("** PLAYER ONE WINS **")
+            print("\u001b[45m** PLAYER ONE WINS **\u001b[0m")
             self.score1 += 1
         else:
-            print("** PLAYER TWO WINS **")
+            print("\u001b[46;1m** PLAYER TWO WINS **\u001b[0m")
             self.score2 += 1
 
         print(f"Score: Player One {self.score1}, Player Two {self.score2}")
@@ -99,11 +108,11 @@ class Game:
         self.p2.learn(move2, move1)
 
     def play_game(self):
-        print("Game start!")
-        for round in range(10):
-            print(f"Round {round + 1} --")
+        print("\u001b[7mGame start!\u001b[0m")
+        for round in range(5):
+            print(f"Round {round + 1} --\n")
             self.play_round()
-        print("Game over!")
+        print('\n\x1b[6;30;42m' + 'Last Round, Game Over!' + '\x1b[0m')
 
 
 if __name__ == '__main__':
