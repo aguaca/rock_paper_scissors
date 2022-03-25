@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 import random
 
-from click import prompt
-
 """This program plays a game of Rock, Paper, Scissors between two Players,
 and reports both Player's scores each round."""
 
@@ -22,10 +20,10 @@ in this game"""
 prompt = "{}, {}, {}? > ".format(rps['rock'], rps['paper'], rps['scissors'])
 
 
-def valid_input(prompt=prompt):
+def valid_input(prompt=prompt, option=moves):
     while True:
         response = input(prompt).lower()
-        if response in moves:
+        if response in option:
             break
         else:
             # print("Sorry, I don't understand.")
@@ -103,7 +101,7 @@ class Game:
             print("\u001b[45m** PLAYER ONE WINS **\u001b[0m")
             self.score1 += 1
         else:
-            print("\u001b[46;1m** PLAYER TWO WINS **\u001b[0m")
+            print("\u001b[44;1m** PLAYER TWO WINS **\u001b[0m")
             self.score2 += 1
 
         print(f"Score: Player One {self.score1}, Player Two {self.score2}")
@@ -118,6 +116,48 @@ class Game:
         print('\n\x1b[6;30;42m' + 'Last Round, Game Over!' + '\x1b[0m')
 
 
+class Menu:
+    def __init__(self):
+        self.players = {
+            "random": RandomPlayer,
+            "cycle": CyclePlayer, "human": HumanPlayer,
+            "reflect": ReflectPlayer
+        }
+    # Abstraction
+
+    def _select_player(self, player2=False):
+        players = ["random", "cycle", "human", "reflect"]
+
+        if player2:
+            players.remove("human")
+
+        for i, player in enumerate(players):
+            print(f"({i+1}) {player}")
+
+        def get_player(prompt):
+            # List comprehension
+            player = valid_input(prompt, [
+                f"{x+1}" for x, _ in enumerate(players)])
+            # Casting
+            player = players[int(player)-1]
+            print(f"player selected: {player}")
+            return self.players[player]
+
+        # List comprehension
+        if not player2:
+            player = get_player("Select Player 1: ")
+        else:
+            player = get_player("Select Player 2: ")
+        return player
+
+    def start_game(self):
+        player1 = self._select_player()
+        player2 = self._select_player(player2=True)
+        game = Game(player1(), player2())
+        game.play_game()
+
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), CyclePlayer())
-    game.play_game()
+    # game = Game(HumanPlayer(), CyclePlayer())
+    # game.play_game()
+    menu = Menu()
+    menu.start_game()
