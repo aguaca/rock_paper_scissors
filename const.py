@@ -10,4 +10,3 @@ RPS = {
     "paper": ORANGE + 'Paper' + RESET,
     "scissors": PURPLE + 'Scissors' + RESET
 }
-

@@ -1,6 +1,7 @@
 from const import MOVES, RPS
 prompt = "{}, {}, {}? > ".format(RPS['rock'], RPS['paper'], RPS['scissors'])
 
+
 def valid_input(prompt=prompt, option=MOVES):
     while True:
         response = input(prompt).lower()
