@@ -1,84 +1,14 @@
 #!/usr/bin/env python3
-import random
 
 """This program plays a game of Rock, Paper, Scissors between two Players,
 and reports both Player's scores each round."""
 
-moves = ['rock', 'paper', 'scissors']
-GREEN = "\u001b[32;1m"
-ORANGE = "\u001b[33m"
-PURPLE = "\u001b[35;1m"
-RESET = "\u001b[0m"
-rps = {
-    "rock": GREEN + 'Rock' + RESET,
-    "paper": ORANGE + 'Paper' + RESET,
-    "scissors": PURPLE + 'Scissors' + RESET
-}
-
 """The Player class is the parent class for all of the Players
 in this game"""
-prompt = "{}, {}, {}? > ".format(rps['rock'], rps['paper'], rps['scissors'])
 
-
-def valid_input(prompt=prompt, option=moves):
-    while True:
-        response = input(prompt).lower()
-        if response in option:
-            break
-        else:
-            # print("Sorry, I don't understand.")
-            pass
-    return response
-
-
-class Player:
-    def move(self):
-        return 'rock'
-
-    def learn(self, my_move, their_move):
-        pass
-
-
-class RandomPlayer(Player):
-    def move(self):
-        return random.choice(moves)
-
-
-class HumanPlayer(Player):
-    def move(self):
-        return valid_input()
-
-
-class ReflectPlayer(Player):
-    def __init__(self):
-        self.last_move = random.choice(moves)
-
-    def move(self):
-        return self.last_move
-
-    def learn(self, _, their_move):
-        self.last_move = their_move
-
-
-class CyclePlayer(Player):
-    def __init__(self):
-        self.last_move = random.choice(moves)
-
-    def move(self):
-        i = moves.index(self.last_move) + 1
-        if i < len(moves):
-            return moves[i]
-        else:
-            return moves[0]
-
-    def learn(self, my_move, _):
-        self.last_move = my_move
-
-
-def beats(one, two):
-    return ((one == 'rock' and two == 'scissors') or
-            (one == 'scissors' and two == 'paper') or
-            (one == 'paper' and two == 'rock'))
+from const import RPS
+import player as p
+from util import beats, valid_input
 
 
 class Game:
@@ -91,8 +21,8 @@ class Game:
     def play_round(self):
         move1 = self.p1.move()
         move2 = self.p2.move()
-        print("You played {}.".format(rps[move1].lower()))
-        print("Opponent played {}.".format(rps[move2].lower()))
+        print("You played {}.".format(RPS[move1].lower()))
+        print("Opponent played {}.".format(RPS[move2].lower()))
 
         result = beats(move1, move2)
         if move1 == move2:
@@ -109,9 +39,9 @@ class Game:
         self.p2.learn(move2, move1)
 
     def play_game(self):
-        print("\u001b[7mGame start!\u001b[0m")
+        print("\n\u001b[7mRock Paper Scissors, Go!\u001b[0m")
         for round in range(5):
-            print(f"Round {round + 1} --\n")
+            print(f"\nRound {round + 1} --")
             self.play_round()
         print('\n\x1b[6;30;42m' + 'Last Round, Game Over!' + '\x1b[0m')
 
@@ -119,9 +49,9 @@ class Game:
 class Menu:
     def __init__(self):
         self.players = {
-            "random": RandomPlayer,
-            "cycle": CyclePlayer, "human": HumanPlayer,
-            "reflect": ReflectPlayer
+            "random": p.RandomPlayer,
+            "cycle": p.CyclePlayer, "human": p.HumanPlayer,
+            "reflect": p.ReflectPlayer
         }
     # Abstraction
 
@@ -146,6 +76,7 @@ class Menu:
         # List comprehension
         if not player2:
             player = get_player("Select Player 1: ")
+            print("________________________")
         else:
             player = get_player("Select Player 2: ")
         return player
@@ -155,6 +86,7 @@ class Menu:
         player2 = self._select_player(player2=True)
         game = Game(player1(), player2())
         game.play_game()
+
 
 if __name__ == '__main__':
     # game = Game(HumanPlayer(), CyclePlayer())
