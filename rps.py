@@ -37,23 +37,24 @@ class Game:
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
 
-    def play_game(self):
+    def play_game(self, rounds):
         print("\n\u001b[7mRock Paper Scissors, Go!\u001b[0m")
-        for round in range(5):
+        for round in range(rounds):
             print(f"\nRound {round + 1} --")
             self.play_round()
-        print('\n\x1b[6;30;42m' + 'Last Round, Game Over!' + '\x1b[0m')
+        print("\n\x1b[6;30;42m" + "Last Round, Game Over!" + "\x1b[0m")
 
 
 class Menu:
     def __init__(self):
         self.players = {
             "random": p.RandomPlayer,
-            "cycle": p.CyclePlayer, "human": p.HumanPlayer,
-            "reflect": p.ReflectPlayer
+            "cycle": p.CyclePlayer,
+            "human": p.HumanPlayer,
+            "reflect": p.ReflectPlayer,
         }
-    # Abstraction
 
+    # Abstraction
     def _select_player(self, player2=False):
         players = ["random", "cycle", "human", "reflect"]
 
@@ -65,30 +66,35 @@ class Menu:
 
         def get_player(prompt):
             # List comprehension
-            player = valid_input(prompt, [
-                f"{x+1}" for x, _ in enumerate(players)])
+            player = valid_input(
+                prompt, [f"{x+1}" for x, _ in enumerate(players)]
+            )
             # Casting
-            player = players[int(player)-1]
+            player = players[int(player) - 1]
             print(f"player selected: {player}")
             return self.players[player]
 
         # List comprehension
         if not player2:
             player = get_player("Select Player 1: ")
-            print("________________________")
+            print("_____________________________")
         else:
             player = get_player("Select Player 2: ")
+
         return player
 
     def start_game(self):
         player1 = self._select_player()
         player2 = self._select_player(player2=True)
+        print("_____________________________")
+        rounds = valid_input(
+            'Number of rounds? ("1-10"): ',
+            [f"{x}" for x in range(10) if x != 0],
+        )
         game = Game(player1(), player2())
-        game.play_game()
+        game.play_game(int(rounds))
 
 
-if __name__ == '__main__':
-    # game = Game(HumanPlayer(), CyclePlayer())
-    # game.play_game()
+if __name__ == "__main__":
     menu = Menu()
     menu.start_game()
