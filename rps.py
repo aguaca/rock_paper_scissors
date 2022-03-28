@@ -20,9 +20,13 @@ class Game:
     def play_round(self):
         move1 = self.p1.move()
         move2 = self.p2.move()
-        print("You played {}.".format(RPS[move1].lower()))
-        print("Opponent played {}.".format(RPS[move2].lower()))
-
+        # check if player one is an instance of the HumanPlayer subclass
+        if isinstance(self.p1, p.HumanPlayer):
+            print("You played {}.".format(RPS[move1].lower()))
+            print("Opponent played {}.".format(RPS[move2].lower()))
+        else:
+            print("Computer played {}.".format(RPS[move1].lower()))
+            print("Opponent played {}.".format(RPS[move2].lower()))
         result = beats(move1, move2)
         if move1 == move2:
             print("\u001b[41;1m** TIE **\u001b[0m")
@@ -77,7 +81,7 @@ class Menu:
         # List comprehension
         if not player2:
             player = get_player("Select Player 1: ")
-            print("_____________________________")
+            print("___________________________")
         else:
             player = get_player("Select Player 2: ")
 
@@ -86,9 +90,9 @@ class Menu:
     def start_game(self):
         player1 = self._select_player()
         player2 = self._select_player(player2=True)
-        print("_____________________________")
+        print("___________________________")
         rounds = valid_input(
-            'Number of rounds? ("1-10"): ',
+            "Number of rounds? (1-10): ",
             [f"{x}" for x in range(10) if x != 0],
         )
         game = Game(player1(), player2())
@@ -98,3 +102,4 @@ class Menu:
 if __name__ == "__main__":
     menu = Menu()
     menu.start_game()
+# fix the pronoun when is AI Vs AI
