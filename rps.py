@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from const import RPS
+from const import H_GREEN, RPS_COLORS, RESET, H_RED, H_PINK, H_BLUE, H_REVERSED
 import player as p
 from util import beats, valid_input
 
@@ -22,19 +22,19 @@ class Game:
         move2 = self.p2.move()
         # check if player one is an instance of the HumanPlayer subclass
         if isinstance(self.p1, p.HumanPlayer):
-            print("You played {}.".format(RPS[move1].lower()))
-            print("Opponent played {}.".format(RPS[move2].lower()))
+            print("You played {}.".format(RPS_COLORS[move1].lower()))
+            print("Opponent played {}.".format(RPS_COLORS[move2].lower()))
         else:
-            print("Computer played {}.".format(RPS[move1].lower()))
-            print("Opponent played {}.".format(RPS[move2].lower()))
+            print("Computer played {}.".format(RPS_COLORS[move1].lower()))
+            print("Opponent played {}.".format(RPS_COLORS[move2].lower()))
         result = beats(move1, move2)
         if move1 == move2:
-            print("\u001b[41;1m** TIE **\u001b[0m")
+            print(f"{H_RED}** TIE **{RESET}")
         elif result:
-            print("\u001b[45m** PLAYER ONE WINS **\u001b[0m")
+            print(f"{H_PINK}** PLAYER ONE WINS **{RESET}")
             self.score1 += 1
         else:
-            print("\u001b[44;1m** PLAYER TWO WINS **\u001b[0m")
+            print(f"{H_BLUE}** PLAYER TWO WINS **{RESET}")
             self.score2 += 1
 
         print(f"Score: Player One {self.score1}, Player Two {self.score2}")
@@ -42,11 +42,11 @@ class Game:
         self.p2.learn(move2, move1)
 
     def play_game(self, rounds):
-        print("\n\u001b[7mRock Paper Scissors, Go!\u001b[0m")
+        print(f"{H_REVERSED}Rock Paper Scissors, Go!{RESET}")
         for round in range(rounds):
             print(f"\nRound {round + 1} --")
             self.play_round()
-        print("\n\x1b[6;30;42m" + "Last Round, Game Over!" + "\x1b[0m")
+        print(H_GREEN + "Last Round, Game Over!" + RESET)
 
 
 class Menu:
@@ -102,4 +102,3 @@ class Menu:
 if __name__ == "__main__":
     menu = Menu()
     menu.start_game()
-# fix the pronoun when is AI Vs AI

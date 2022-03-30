@@ -1,5 +1,8 @@
-from const import MOVES, RPS
-prompt = "{}, {}, {}? > ".format(RPS['rock'], RPS['paper'], RPS['scissors'])
+from const import MOVES, RPS_COLORS
+
+prompt = "{}, {}, {}? > ".format(
+    RPS_COLORS["rock"], RPS_COLORS["paper"], RPS_COLORS["scissors"]
+)
 
 
 def valid_input(prompt=prompt, option=MOVES):
@@ -14,6 +17,8 @@ def valid_input(prompt=prompt, option=MOVES):
 
 
 def beats(one, two):
-    return ((one == 'rock' and two == 'scissors') or
-            (one == 'scissors' and two == 'paper') or
-            (one == 'paper' and two == 'rock'))
+    return (
+        (one == "rock" and two == "scissors")
+        or (one == "scissors" and two == "paper")
+        or (one == "paper" and two == "rock")
+    )
