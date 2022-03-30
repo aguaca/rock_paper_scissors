@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from const import H_GREEN, RPS_COLORS, RESET, H_RED, H_PINK, H_BLUE, H_REVERSED
 import player as p
-from util import beats, valid_input
+from util import beats, rpsls_beats, valid_input
 
 """This program plays a game of Rock, Paper, Scissors between two Players,
 and reports both Player's scores each round."""
@@ -27,7 +27,12 @@ class Game:
         else:
             print("Computer played {}.".format(RPS_COLORS[move1].lower()))
             print("Opponent played {}.".format(RPS_COLORS[move2].lower()))
-        result = beats(move1, move2)
+
+        if self.p1.game_mode == "1":
+            result = beats(move1, move2)
+        else:
+            result = rpsls_beats(move1, move2)
+
         if move1 == move2:
             print(f"{H_RED}** TIE **{RESET}")
         elif result:
@@ -46,7 +51,7 @@ class Game:
         for round in range(rounds):
             print(f"\nRound {round + 1} --")
             self.play_round()
-        print(H_GREEN + "Last Round, Game Over!" + RESET)
+        print("\n" + H_GREEN + "Last Round, Game Over!" + RESET)
 
 
 class Menu:
@@ -88,14 +93,18 @@ class Menu:
         return player
 
     def start_game(self):
+        print("(1) rps")
+        print("(2) rpsls")
+        game_mode = valid_input("Select a game mode: ", ["1", "2"])
+
+        print("___________________________")
         player1 = self._select_player()
         player2 = self._select_player(player2=True)
         print("___________________________")
         rounds = valid_input(
-            "Number of rounds? (1-10): ",
-            [f"{x}" for x in range(10) if x != 0],
+            "Number of rounds? (1-10): ", [f"{x}" for x in range(1, 11)]
         )
-        game = Game(player1(), player2())
+        game = Game(player1(game_mode), player2(game_mode))
         game.play_game(int(rounds))
 
 

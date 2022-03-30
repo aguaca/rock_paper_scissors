@@ -22,3 +22,18 @@ def beats(one, two):
         or (one == "scissors" and two == "paper")
         or (one == "paper" and two == "rock")
     )
+
+
+def rpsls_beats(one, two):
+    return (
+        (one == "rock" and two == "scissors")
+        or (one == "rock" and two == "lizard")
+        or (one == "scissors" and two == "paper")
+        or (one == "scissors" and two == "lizard")
+        or (one == "paper" and two == "rock")
+        or (one == "paper" and two == "spock")
+        or (one == "lizard" and two == "spock")
+        or (one == "lizard" and two == "paper")
+        or (one == "spock" and two == "rock")
+        or (one == "spock" and two == "scissors")
+    )
