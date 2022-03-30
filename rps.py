@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from time import sleep
 from const import H_GREEN, RPS_COLORS, RESET, H_RED, H_PINK, H_BLUE, H_REVERSED
 import player as p
 from util import beats, rpsls_beats, valid_input
@@ -25,6 +26,7 @@ class Game:
             print("You played {}.".format(RPS_COLORS[move1].lower()))
             print("Opponent played {}.".format(RPS_COLORS[move2].lower()))
         else:
+            sleep(3)
             print("Computer played {}.".format(RPS_COLORS[move1].lower()))
             print("Opponent played {}.".format(RPS_COLORS[move2].lower()))
 

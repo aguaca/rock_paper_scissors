@@ -1,6 +1,7 @@
 import random
 from const import MOVES, RPS_COLORS
 from util import valid_input
+from time import sleep
 
 
 class Player:
@@ -30,7 +31,6 @@ class HumanPlayer(Player):
         super().__init__(game_mode)
 
     def move(self):
-        # return valid_input()
         if self.game_mode == "1":
             return valid_input()
         else:
@@ -47,7 +47,9 @@ class HumanPlayer(Player):
 class ReflectPlayer(Player):
     def __init__(self, game_mode):
         super().__init__(game_mode)
-        self.last_move = random.choice(MOVES + ["lizard", "spock"])
+        # Ternary operator
+        moves = MOVES if game_mode == "1" else MOVES + ["lizard", "spock"]
+        self.last_move = random.choice(moves)
 
     def move(self):
         return self.last_move
@@ -59,14 +61,16 @@ class ReflectPlayer(Player):
 class CyclePlayer(Player):
     def __init__(self, game_mode):
         super().__init__(game_mode)
-        self.last_move = random.choice(MOVES + ["lizard", "spock"])
+        # Ternary operator
+        self.moves = MOVES if game_mode == "1" else MOVES + ["lizard", "spock"]
+        self.last_move = random.choice(self.moves)
 
     def move(self):
-        i = MOVES.index(self.last_move) + 1
-        if i < len(MOVES):
-            return MOVES[i]
+        i = self.moves.index(self.last_move) + 1
+        if i < len(self.moves):
+            return self.moves[i]
         else:
-            return MOVES[0]
+            return self.moves[0]
 
     def learn(self, my_move, _):
         self.last_move = my_move
